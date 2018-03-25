@@ -1,11 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"/>
 
-</FrameLayout>
+    <HorizontalScrollView
+        android:id="@+id/estimation_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/estimation_half"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="@dimen/estimation_button_side"
+                android:layout_height="@dimen/estimation_button_side"
+                android:text="0.5"/>
+
+            <Button
+                android:id="@+id/estimation_one"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="@dimen/estimation_button_side"
+                android:layout_height="@dimen/estimation_button_side"
+                android:text="1"/>
+
+            <Button
+                android:id="@+id/estimation_two"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="@dimen/estimation_button_side"
+                android:layout_height="@dimen/estimation_button_side"
+                android:text="2"/>
+
+            <Button
+                android:id="@+id/estimation_five"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="@dimen/estimation_button_side"
+                android:layout_height="@dimen/estimation_button_side"
+                android:text="5"/>
+
+            <Button
+                android:id="@+id/estimation_ten"
+                style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+                android:layout_width="@dimen/estimation_button_side"
+                android:layout_height="@dimen/estimation_button_side"
+                android:text="10"/>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</LinearLayout>

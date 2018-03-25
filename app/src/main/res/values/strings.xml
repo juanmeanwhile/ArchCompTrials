@@ -3,4 +3,17 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottomnav_people">People</string>
+    <string name="bottomnav_tasks">Tasks</string>
+    <string name="bottomnav_feed">Activity</string>
+    <string name="estimation_dialog_header">Who made this task?</string>
+    <string name="done_task_text">%1$s did %2$s</string>
+    <string name="title_activity_create_group">CreateGroupActivity</string>
+    <string name="creategroup_name_hint">Group\'s name</string>
+    <string name="create_group_add_people_header">Flatmates</string>
+    <string name="add_more_people_button">add another</string>
+    <string name="person_field_email_hint">Email</string>
+    <string name="person_field_name_hint">Name</string>
+    <string name="createflat_error">Error creating flat</string>
+    <string name="createflat_flat_created">Your flat is ready</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.meanwhile.flatmates;
+package com.meanwhile.flatmates.task;
 
 
 import android.arch.lifecycle.Observer;
@@ -13,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.meanwhile.flatmates.R;
+import com.meanwhile.flatmates.ViewModelFactory;
+import com.meanwhile.flatmates.repository.model.Task;
+import com.meanwhile.flatmates.repository.db.UserStats;
 
 import java.util.List;
 
@@ -21,14 +25,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TaskFragment extends Fragment {
-
+public class TaskFragment extends Fragment implements TaskAdapter.TaskAdapterListener, SelectUserDialogFragment.OnSelectUserListener {
 
     private View mEmptyView;
     private RecyclerView mRecyclerView;
     private EditText mAddTaskField;
     private Button mAddButton;
-    private TaskViewModel viewModel;
+    private TaskViewModel mViewModel;
 
     public static Fragment newInstance() {
         TaskFragment fragment = new TaskFragment();
@@ -42,15 +45,18 @@ public class TaskFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-        viewModel.init();
 
-        viewModel.getPendingTasks().observe(this, new Observer<List<String>>() {
+        ViewModelFactory factory = ViewModelFactory.getInstance(getActivity().getApplication());
+        mViewModel = ViewModelProviders.of(getActivity(), factory).get(TaskViewModel.class);
+
+        mViewModel.init();
+
+        mViewModel.getPendingTask().observe(this, new Observer<List<Task>>() {
             @Override
-            public void onChanged(@Nullable List<String> pendingTasks) {
+            public void onChanged(@Nullable List<Task> tasks) {
                 //Update UI
 
-                ((TaskAdapter) mRecyclerView.getAdapter()).setData(pendingTasks);
+                ((TaskAdapter) mRecyclerView.getAdapter()).setData(tasks);
             }
         });
     }
@@ -70,49 +76,32 @@ public class TaskFragment extends Fragment {
 
         mAddTaskField = view.findViewById(R.id.add_task_field);
         mAddButton = view.findViewById(R.id.add_button);
+        mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String taskName = mAddTaskField.getText().toString();
+                mViewModel.onCreateTask(taskName);
+            }
+        });
 
         mRecyclerView = view.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new TaskAdapter());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setAdapter(new TaskAdapter(this));
     }
 
-    private class TaskAdapter extends RecyclerView.Adapter<TaskHolder> {
-
-        List<String> data = null;
-
-        @Override
-        public TaskHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new TaskHolder(LayoutInflater.from(getContext()).inflate(R.layout.list_item_task, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(TaskHolder holder, int position) {
-            String task = data.get(position);
-
-            holder.name.setText(task);
-        }
-
-        @Override
-        public int getItemCount() {
-            return data == null? 0: data.size();
-        }
-
-        public void setData(List<String> data) {
-            this.data = data;
-
-            notifyDataSetChanged();
-        }
+    @Override
+    public void onTaskEstimated(Task task) {
+        mViewModel.onTaskEstimated(task);
     }
 
-    private class TaskHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onEstimatedTaskClick(Task task) {
+        SelectUserDialogFragment.newInstance(task).show(getChildFragmentManager(), "selectUser");
+    }
 
-        TextView name;
-
-        public TaskHolder(View itemView) {
-            super(itemView);
-
-            name = itemView.findViewById(R.id.name);
-        }
+    @Override
+    public void onUserSelected(Task task, UserStats user) {
+        mViewModel.onTaskAssigned(task, user);
     }
 }

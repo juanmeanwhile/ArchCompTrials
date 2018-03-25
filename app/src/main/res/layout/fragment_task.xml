@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.meanwhile.flatmates.TaskFragment">
+    tools:context="com.meanwhile.flatmates.task.TaskFragment"
+    >
 
 
     <TextView
@@ -20,11 +21,14 @@
         android:id="@+id/list"
         android:layout_width="383dp"
         android:layout_height="440dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_task_field"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"/>
 
     <EditText
         android:id="@+id/add_task_field"
